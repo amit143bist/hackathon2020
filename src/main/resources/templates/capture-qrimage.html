@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+	<video id="player" controls autoplay></video>
+	<button id="capture">Capture</button>
+	<canvas id="canvas" width=320 height=240></canvas>
+	
+	<form action="saveProfileData" method="post" enctype="multipart/form-data">
+	    <input type="file" name="file" />
+	    <input type="submit" />
+	</form>
+	
+  </body>
+	  
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script>
+	  const player = document.getElementById('player');
+	  const canvas = document.getElementById('canvas');
+	  const context = canvas.getContext('2d');
+	  const captureButton = document.getElementById('capture');
+	
+	  const constraints = {
+	    video: true,
+	  };
+	
+	  captureButton.addEventListener('click', () => {
+	    // Draw the video frame to the canvas.
+	    context.drawImage(player, 0, 0, canvas.width, canvas.height);
+	    // Stop all video streams.
+	    player.srcObject.getVideoTracks().forEach(track => track.stop());
+	    
+	    var profile_img = document.getElementById("canvas").value;
+	    
+	    $.ajax({ 
+	        type: "POST",  
+	        url: "/saveProfileData",  
+	        data:{ 
+	            "user_name": "Test",
+	            "profile_img":profile_img
+	        },
+	        success: function(response){
+	            //other code
+	        },
+	        error: function(e){
+	            //alert('Error: ' + e);
+	         }
+	        });
+	  });
+	
+	  // Attach the video stream to the video element and autoplay.
+	  navigator.mediaDevices.getUserMedia(constraints)
+	    .then((stream) => {
+	      player.srcObject = stream;
+	    });
+	  
+</script>
+</html>
