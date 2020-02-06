@@ -12,7 +12,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 public class QRCodeGenerator {
 
-	private static final String QR_CODE_IMAGE_PATH = "C:\\hackathon2020\\qrcode/MyQRCode.png";
+	private static final String QR_CODE_IMAGE_PATH = "C:\\hackathon2020\\qrcode/MyQRCode";
 
 	public static void generateQRCodeImage(String text, int width, int height, String filePath)
 			throws WriterException, IOException {
@@ -24,8 +24,9 @@ public class QRCodeGenerator {
 	}
 
 	public static void main(String[] args) {
+		
 		try {
-			generateQRCodeImage("http://localhost:53134/", 350, 350, QR_CODE_IMAGE_PATH);
+			generateQRCodeImage("http://localhost:53134?applicationId=12346", 350, 350, QR_CODE_IMAGE_PATH + "_12346.png");
 		} catch (WriterException e) {
 			System.out.println("Could not generate QR Code, WriterException :: " + e.getMessage());
 		} catch (IOException e) {

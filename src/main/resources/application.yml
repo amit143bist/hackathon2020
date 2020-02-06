@@ -1,8 +1,8 @@
 docusign:
   api:
-    integratorKey: 8d72617c-675f-40e2-8f2e-439e5d2e95b2
+    integratorKey: 16f81d9e-e9ee-408d-bc60-d6e1aecd9756
     scopes: signature impersonation
     user: 8e7f66a5-50c1-498c-8513-c403a35ea3cb
     baserUrl: https://demo.docusign.net/restapi/v2.1
-    account: 1764240
+    account: bb28c23d-bd41-4f02-91f7-f93ae6c6d220
 server:  port: 53134
