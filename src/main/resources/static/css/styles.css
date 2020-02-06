@@ -1,0 +1,228 @@
+#myProgress {
+    width: 100%;
+    background-color: #ddd;
+}
+
+.tasks{
+     background-color: #F6F8F8;
+     padding: 10px;
+     border-radius: 5px;
+     margin-top: 10px;
+ }
+.tasks span{
+    font-weight: bold;
+}
+.tasks input{
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+.tasks a{
+    color: #000;
+    text-decoration: none;
+    border:none;
+}
+.tasks a:hover{
+    border-bottom: dashed 1px #0088cc;
+}
+.tasks label{
+    display: block;
+    text-align: center;
+}
+
+.progress-bar-green {
+    background-color: green !important;
+}
+.progress-bar-red {
+    background-color: red !important;
+}
+.progress-bar-orange {
+    background-color: orange !important;
+}
+.progress-bar-lime {
+    background-color: lime !important;
+}
+
+table {
+    width:100%;
+}
+.table-users {
+    border: 0.5px solid #D6DBDF;
+    border-radius: 16px;
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+    max-width: calc(50% - 2em);
+    margin-left: 2em;
+    overflow: hidden;
+    width: 20%;
+
+}
+.table-users.h0 {
+
+    box-shadow: 0px 0px 0 rgba(0, 0, 0, 0);
+    margin: 0em auto;
+    border: 0px;
+    width: 100%;
+    max-width: calc(100% - 2em);
+}
+.table-users.h1 {
+    box-shadow: 0px 0px 0 rgba(0, 0, 0, 0);
+    margin: 0em auto;
+    border: 0px
+}
+table td,
+table th {
+    padding: 4px;
+}
+table td {
+    font-size: 9pt;
+    text-align: center;
+    vertical-align: middle;
+    text-align: left;
+}
+table td:last-child {
+    font-size: 12pt;
+    line-height: 1.4;
+    text-align: left;
+}
+table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+p {
+    font-size: 9pt;
+    font-family: Arial, sans-serif;
+    color: black;
+}
+td {
+    font-size: 9pt;
+    font-family: Arial, sans-serif;
+    color: black;
+}
+.header {
+    background-color: #1B11EE;
+    color: white;
+    font-size: 3em;
+    padding: 10px 12px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 14pt;
+    font-weight: bold;
+    cursor: pointer;
+}
+.header.green {
+    background-color: #555;
+}
+
+a:link {
+    background: none transparent scroll repeat 0% 0%;
+    color: #000099;
+    text-decoration: underline;
+    font-size: 12pt;
+    text-transform: uppercase;
+    text-align: center;
+}
+a:visited {
+    background: none transparent scroll repeat 0% 0%;
+    color: #000099;
+    text-decoration: underline;
+    font-size: 12pt;
+    text-transform: uppercase;
+}
+a:active {
+    background: none transparent scroll repeat 0% 0%;
+    color: #000099;
+    text-decoration: underline;
+    font-size: 12pt;
+    text-transform: uppercase;
+}
+a:hover {
+    background: #ffa;
+    color: #000099;
+    text-decoration: underline;
+    font-size: 12pt;
+    text-transform: uppercase;
+}
+.page {
+    width: 100%;
+    clear: both;
+}
+.content {
+    font-size: 12pt;
+    font-family: Arial, sans-serif;
+    color: black;
+}
+.content-text {
+    margin: 0px 0px 0px 0px;
+    font-size: 12pt;
+    font-family: Arial, sans-serif;
+    color: black;
+}
+.content-large {
+    margin: 1em 2em 1em 2em;
+    font-size: 10pt;
+    font-family: Arial, sans-serif;
+    color: black;
+}
+.content-small {
+    margin: 1em 2em 1em 2em;
+    font-size: 10pt;
+    font-family: Arial, sans-serif;
+    color: black;
+}
+.head {
+    font-size: 10pt;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    color: #cc0033;
+}
+.headsmall {
+    font-size: 10pt;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    color: #cc0033;
+}
+.inline-bold {
+    text-align: left;
+    margin: 0px 0px 0pt 0px;
+    font: 10pt Arial, sans-serif;
+    color: #003333;
+}
+.textsmall {
+    margin: 0px 0px 0px 0px;
+    font-size: 8pt;
+    font-family: Arial, sans-serif;
+    color: black;
+}
+.sepbar {
+    FONT-SIZE: 5px;
+    BACKGROUND: #cc0033;
+}
+.hide {
+    display: none;
+}
+.greybox {
+    background-color: #EBF5FB;
+    border-left: '1px solid black';
+    border-top: '1px solid black';
+    border-bottom: '1px solid black';
+    border-right: '1px solid black';
+    font-size: 14pt;
+    font-family: Arial, sans-serif;
+}
+h1 {
+    font-family: 'Arial', 'sans-serif';
+    font-weight: bold;
+    font-size: 33pt;
+    color: #0000FF;
+    text-align: center;
+}
+.table-users.h12 {
+    border: 0px;
+    box-shadow: 0px 0px 0 rgba(0, 0, 0, 0);
+    text-align: right;
+}
+.active22, .collapsible22:hover {
+    background-color: #555;
+}
