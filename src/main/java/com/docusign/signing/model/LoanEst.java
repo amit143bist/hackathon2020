@@ -1,5 +1,7 @@
 package com.docusign.signing.model;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -8,53 +10,55 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({ "DateIssued", "ApplicateName", "ApplicateAddress1", "ApplicateAddress2", "Property", "SalePrice",
 		"LoanTerm", "Purpose", "LoanType", "LoanID", "RateLock", "LoanAmount", "InterestRate", "MonthlyPayment",
 		"PrincipaleAndInterest", "MortgageInsurance", "EscrowAmount", "Estimates", "ClosingCost", "CashToClose",
-		"completedFieldCount", "totalRequiredFieldCount" })
+		"completedFieldCount", "totalRequiredFieldCount", "tabContentList" })
 public class LoanEst {
 
 	@JsonProperty("DateIssued")
-	private String dateIssued="";
+	private String dateIssued = "";
 	@JsonProperty("ApplicateName")
-	private String applicateName="";
+	private String applicateName = "";
 	@JsonProperty("ApplicateAddress1")
-	private String applicateAddress1="";
+	private String applicateAddress1 = "";
 	@JsonProperty("ApplicateAddress2")
-	private String applicateAddress2="";
+	private String applicateAddress2 = "";
 	@JsonProperty("Property")
-	private String property="";
+	private String property = "";
 	@JsonProperty("SalePrice")
-	private String salePrice="";
+	private String salePrice = "";
 	@JsonProperty("LoanTerm")
-	private String loanTerm="";
+	private String loanTerm = "";
 	@JsonProperty("Purpose")
-	private String purpose="";
+	private String purpose = "";
 	@JsonProperty("LoanType")
-	private String loanType="";
+	private String loanType = "";
 	@JsonProperty("LoanID")
-	private String loanID="";
+	private String loanID = "";
 	@JsonProperty("RateLock")
-	private String rateLock="";
+	private String rateLock = "";
 	@JsonProperty("LoanAmount")
-	private String loanAmount="";
+	private String loanAmount = "";
 	@JsonProperty("InterestRate")
-	private String interestRate="";
+	private String interestRate = "";
 	@JsonProperty("MonthlyPayment")
-	private String monthlyPayment="";
+	private String monthlyPayment = "";
 	@JsonProperty("PrincipaleAndInterest")
-	private String principaleAndInterest="";
+	private String principaleAndInterest = "";
 	@JsonProperty("MortgageInsurance")
-	private String mortgageInsurance="";
+	private String mortgageInsurance = "";
 	@JsonProperty("EscrowAmount")
-	private String escrowAmount="";
+	private String escrowAmount = "";
 	@JsonProperty("Estimates")
-	private String estimates="";
+	private String estimates = "";
 	@JsonProperty("ClosingCost")
-	private String closingCost="";
+	private String closingCost = "";
 	@JsonProperty("CashToClose")
-	private String cashToClose="";
+	private String cashToClose = "";
 	@JsonProperty("completedFieldCount")
-	private int completedFieldCount=0;
+	private int completedFieldCount = 0;
 	@JsonProperty("totalRequiredFieldCount")
-	private int totalRequiredFieldCount=0;
+	private int totalRequiredFieldCount = 0;
+	@JsonProperty("tabContentList")
+	private List<TabContent> tabContentList;
 
 	@JsonProperty("completedFieldCount")
 	public int getCompletedFieldCount() {
@@ -274,6 +278,16 @@ public class LoanEst {
 	@JsonProperty("CashToClose")
 	public void setCashToClose(String cashToClose) {
 		this.cashToClose = cashToClose;
+	}
+
+	@JsonProperty("tabContentList")
+	public List<TabContent> getTabContentList() {
+		return tabContentList;
+	}
+
+	@JsonProperty("tabContentList")
+	public void setTabContentList(List<TabContent> tabContentList) {
+		this.tabContentList = tabContentList;
 	}
 
 }

@@ -1,95 +1,331 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>DocuSign Sample Embedded App</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <style>
-      body {
-        font-family: Helvetica, Arial, sans-serif;
-      }
-      .container {
-        margin: 0 auto;
-        padding: 10px;
-        display: flex;
-      }
-      .code {
-        max-width: 500px;
-        max-height: 790px;
-        overflow: auto;
-      }
-    </style>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <h1>Sample Signature Upload App</h1>
-    <p id="errorid"></p>
-    <p id="leftData"></p>
-	
-    <input id="canFinishForm" type="text" value="false">
-	<button id="btnFinish" onclick="fnFinish()">Finish</button>
-    
-	<div class="progress progress-striped active">
-      <div id="signing-progress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%">10%
-      </div>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Smart Contract Form</title>
+<link rel="stylesheet" th:href="@{/css/styles.css}">
+<style>
+body {
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+.container {
+	margin: 0 auto;
+	padding: 10px;
+	display: flex;
+}
+
+.code {
+	max-width: 500px;
+	max-height: 790px;
+	overflow: auto;
+}
+
+.alert {
+	padding: 20px;
+	background-color: #f44336;
+	color: white;
+}
+
+.closebtn {
+	margin-left: 15px;
+	color: white;
+	font-weight: bold;
+	float: right;
+	font-size: 22px;
+	line-height: 20px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+.closebtn:hover {
+	color: black;
+}
+</style>
+</head>
+<body>
+	<noscript>You need to enable JavaScript to run this app.</noscript>
+	<h1>Smart Contract Form</h1>
+
+	<div class="alert" style="display: none" id="errorDiv">
+		<span id="errMsg" class="closebtn"
+			onclick="this.parentElement.style.display='none';">&times;</span>
+		<div id="errorid"></div>
 	</div>
-    <div class="table-users" id="dataViewer">
 
-    </div>
-	
-    <div class="container">
-      <iframe id="ds-iframe" name="ds-iframe"></iframe>
-    </div>
-	
-	
 
+	<div class="progress progress-striped active">
+		<div id="signing-progress" class="progress-bar" role="progressbar"
+			aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+			style="width: 100%">0%</div>
+	</div>
+	
+	<div id="loaderImage"></div>
+
+	<div id="containerDiv">
+		<div class="container">
+
+			<iframe id="ds-iframe" name="ds-iframe"></iframe>
+	
+			<div id="dataViewer" class="table-users" style="display: none"></div>
+	
+		</div>
+		<div class="container">
+			<input id="canFinishForm" type="hidden" value="false">
+	
+			<button id="btnValidateData" class="nextButton"
+				onclick="validateData()">Validate Data</button>
+	
+			<button id="btnSignDocument" class="nextButton"
+				onclick="signDocument()" style="display: none">Sign Document</button>
+		</div>
+	</div>
+
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<link
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+		rel="stylesheet" />
+
+	<script th:inline="javascript">
+	
+	var cSpeed=9;
+    var cWidth=150;
+    var cHeight=150;
+    var cTotalFrames=12;
+    var cFrameWidth=150;
+    var cImageSrc='images/sprites.gif';
+
+    var cImageTimeout=false;
+    var cIndex=0;
+    var cXpos=0;
+    var cPreloaderTimeout=false;
+    var SECONDS_BETWEEN_FRAMES=0;
+
+    function startAnimation(){
+
+        document.getElementById('loaderImage').style.backgroundImage='url('+cImageSrc+')';
+        document.getElementById('loaderImage').style.width=cWidth+'px';
+        document.getElementById('loaderImage').style.height=cHeight+'px';
+
+        //FPS = Math.round(100/(maxSpeed+2-speed));
+        FPS = Math.round(100/cSpeed);
+        SECONDS_BETWEEN_FRAMES = 1 / FPS;
+
+        cPreloaderTimeout=setTimeout('continueAnimation()', SECONDS_BETWEEN_FRAMES/1000);
+
+    }
+
+    function continueAnimation(){
+
+        cXpos += cFrameWidth;
+        //increase the index so we know which frame of our animation we are currently on
+        cIndex += 1;
+
+        //if our cIndex is higher than our total number of frames, we're at the end and should restart
+        if (cIndex >= cTotalFrames) {
+            cXpos =0;
+            cIndex=0;
+        }
+
+        if(document.getElementById('loaderImage'))
+            document.getElementById('loaderImage').style.backgroundPosition=(-cXpos)+'px 0';
+
+        cPreloaderTimeout=setTimeout('continueAnimation()', SECONDS_BETWEEN_FRAMES*1000);
+    }
+
+    function stopAnimation(){//stops animation
+        clearTimeout(cPreloaderTimeout);
+        cPreloaderTimeout=false;
+    }
+
+    function imageLoader(s, fun)//Pre-loads the sprites image
+    {
+        clearTimeout(cImageTimeout);
+        cImageTimeout=0;
+        genImage = new Image();
+        genImage.onload=function (){cImageTimeout=setTimeout(fun, 0)};
+        genImage.onerror=new Function('alert(\'Could not load the image\')');
+        genImage.src=s;
+    }
+	
+	
+	function hide (element) {
+        var local_element;
+        local_element=document.getElementById(element);
+        local_element.style.display='none';
+    }
+	
+    function show (element) {
+        var local_element;
+        local_element=document.getElementById(element);
+        local_element.style.display='block';
+    }
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    var fieldsStatus = {};
+    var genNextURL = '';
     
-    <script th:inline="javascript">
+    function signDocument() {
+    	
+    	var iframe = document.querySelector('#ds-iframe');
+    	var frame = iframe.contentWindow;
+    	
+    	frame.postMessage({
+            functionName: 'finish'
+        }, 'https://demo.docusign.net')
+    	
+        show('loaderImage');
+    	    	
+      	//The following code starts the animation
+      	var cImageSrc='images/sprites.gif';
+        new imageLoader(cImageSrc, 'startAnimation()');
+        
+        hide('containerDiv');
+    	console.log('genNextURL in validateData()' + genNextURL);
+    	window.location.href=genNextURL;
+    }
     
-    function fnFinish() {
-    	console.log('fnFinish>>>> ');
+    function validateData() {
+    	
+    	console.log('validateData>>>> ');
     	
     	var envelopeId = /*[[${envelopeId}]]*/;
         var applicationId = /*[[${applicationId}]]*/;
         
-    	  $.ajax({
-    	        type: "POST",
-    	        dataType: "json",
-    	        url: "/validateData?envelopeId="+envelopeId+"&applicationId="+applicationId,
-    	        headers: {
-    	            'Accept': 'application/json',
-    	            'Content-Type': 'application/json'
-    	          },
-    	        success: function(resData){
-    	        
-    	        console.log('resValidateData>>>> ' + JSON.stringify(resData));
-    	        
-    	        
-    	        console.log('resValidateData>>>> ' + resData.redirectUrl);
-    	        if(resData.status === 'success'){
-    	        	
-    	        	window.location.href=resData.redirectUrl;
-    	        }
-    	        
-    	        if(resData.status === 'failure'){
-    	        	
-    	        	document.getElementById("errorid").innerHTML = resData.errorMessage;
-    	        }
-    	          
-    	        },
-    	        error: function(error){
-    	          console.log('error>>>> ' + error);
-    	        }
-    	    });
+        var canFinishForm = document.getElementById("canFinishForm").value;
+        
+        console.log('canFinishForm in validateData ' + canFinishForm);
+        
+        document.getElementById("errorid").innerHTML="";
+        hide('errorDiv');
+        
+        show('loaderImage');
+    	    	
+      	//The following code starts the animation
+      	var cImageSrc='images/sprites.gif';
+        new imageLoader(cImageSrc, 'startAnimation()');
+        
+        hide('containerDiv');
+        
+	        if(canFinishForm === 'true' || canFinishForm){
+	        	$.ajax({
+	    	        type: "POST",
+	    	        dataType: "json",
+	    	        url: "/validateData?envelopeId="+envelopeId+"&applicationId="+applicationId,
+	    	        headers: {
+	    	            'Accept': 'application/json',
+	    	            'Content-Type': 'application/json'
+	    	          },
+	    	        success: function(respDataServer){
+	    	        
+		    	        console.log('respDataServer in validateData >>>> ' + JSON.stringify(respDataServer));
+		    	        
+		    	        if(respDataServer.status === 'success'){
+		    	        	
+		    	        	genNextURL = respDataServer.redirectUrl;
+		    	        	//window.location.href=resData.redirectUrl;
+		    	        	
+		    	        	hide('loaderImage');
+		    	        	show('containerDiv');
+		    	        	
+		    	        	hide('btnValidateData');
+		    	        	show('btnSignDocument');
+		    	        	show('dataViewer');
+		    	        	
+		    	        	fieldsStatus.totalRequiredCompleted = respDataServer.LoanEst.completedFieldCount;
+			                fieldsStatus.totalRequiredFields = respDataServer.LoanEst.totalRequiredFieldCount;
+			                fieldsStatus.tabContentList = respDataServer.LoanEst.tabContentList;
+			                
+			                updateToolbar(fieldsStatus.totalRequiredCompleted, fieldsStatus.totalRequiredFields);
+		    	        	
+		    	        	var resData = {};
+
+			                resData.Default = "1";
+			                resData.DateIssued = respDataServer.LoanEst.DateIssued;
+			                resData.ApplicateName = respDataServer.LoanEst.ApplicateName;
+			                resData.ApplicateAddress1 = respDataServer.LoanEst.ApplicateAddress1;
+			                resData.ApplicateAddress2 = respDataServer.LoanEst.ApplicateAddress2;
+			                resData.Property = respDataServer.LoanEst.Property;
+			                resData.SalePrice = respDataServer.LoanEst.SalePrice;
+			                resData.LoanTerm = respDataServer.LoanEst.LoanTerm;
+			                resData.Purpose = respDataServer.LoanEst.Purpose;
+			                resData.LoanType = respDataServer.LoanEst.LoanType;
+			                resData.LoanID = respDataServer.LoanEst.LoanID;
+			                resData.RateLock = respDataServer.LoanEst.RateLock;
+			                resData.LoanAmount = respDataServer.LoanEst.LoanAmount;
+			                resData.InterestRate = respDataServer.LoanEst.InterestRate;
+			                resData.MonthlyPayment = respDataServer.LoanEst.MonthlyPayment;
+			                resData.PrincipaleAndInterest = respDataServer.LoanEst.PrincipaleAndInterest;
+			                resData.MortgageInsurance = respDataServer.LoanEst.MortgageInsurance;
+			                resData.EscrowAmount = respDataServer.LoanEst.EscrowAmount;
+			                resData.Estimates = respDataServer.LoanEst.Estimates;
+			                resData.ClosingCost = respDataServer.LoanEst.ClosingCost;
+			                resData.CashToClose = respDataServer.LoanEst.CashToClose;
+
+			                drawTable(respDataServer.LoanEst);
+		    	        }
+		    	        
+		    	        if(respDataServer.status === 'failure'){
+		    	        	
+		    	        	hide('loaderImage');
+		    	        	show('containerDiv');
+		    	        	document.getElementById("errorid").innerHTML = respDataServer.errorMessage;
+		    	        	show('errorDiv');
+		    	        	show('btnValidateData');
+		    	        	hide('btnSignDocument');		    	        	
+		    	        }
+	    	          
+	    	        },
+	    	        error: function(error){
+	    	        	
+	    	          hide('loaderImage');
+	    	          show('containerDiv');
+	    	          console.log('error in validateData >>>> ' + error);
+	    	        }
+	    	    });
+	        }
+    	  
     	}
     
+    function reloadProgressBar(tabContent){
+    	
+    	var contentSize = fieldsStatus.tabContentList.length;
+	      
+    	fieldsStatus.tabContentList.forEach(function(myProperty_element) {
+    	    var tabIdName = myProperty_element.tabIdName;
+    	    var tabComplete = myProperty_element.tabComplete;
+    	    //console.log('the name of the member is : ' + tabIdName + ' tabComplete::: ' + tabComplete);
+    	    
+    	    if(tabContent.label === tabIdName){
+    	    	myProperty_element.tabComplete = tabContent.isComplete;
+    	    }
+    	});
+    	
+    	var completeFieldCount = 0;
+    	fieldsStatus.tabContentList.forEach(function(myProperty_element) {
+    		
+    		//console.log('Updated the name of the member is : ' + myProperty_element.tabIdName + ' Updated tabComplete::: ' + myProperty_element.tabComplete);
+    	    
+    	    if(myProperty_element.tabComplete === 'true' || myProperty_element.tabComplete === true){
+    	    	
+    	    	//console.log('myProperty_element.tabComplete check ');
+    	    	completeFieldCount = completeFieldCount + 1;
+    	    }
+    	});
+    	
+    	//console.log('In reloadProgressBar completeFieldCount is ' + completeFieldCount + ' contentSize ' + contentSize);
+    	updateToolbar(completeFieldCount, contentSize);
+	    
+    }
     
     function loadAppData() {
+    	
     	console.log('loadAppData>>>> ');
+    	
+    	var dataViewerTable = document.getElementById('dataViewer');
+		dataViewerTable.innerHTML = '';
+		$( ".table-users" ).empty();
     	
     	var envelopeId = /*[[${envelopeId}]]*/;
         var applicationId = /*[[${applicationId}]]*/;
@@ -104,78 +340,80 @@
     	          },
     	        success: function(respDataServer){
     	        	
-    	        	console.log('respDataServer>>>> ' + JSON.stringify(respDataServer));
+    	        	console.log('respDataServer in loadAppData >>>> ' + JSON.stringify(respDataServer));
     	        	
-    	        	console.log('respDataServer object values>>>> ' + respDataServer.LoanEst.DateIssued);
+    	        	console.log('respDataServer in loadAppData >>>> ' + respDataServer.LoanEst.DateIssued);
     	        	
-	    	        var fieldsStatus = {};
-					  
 					fieldsStatus.totalRequiredCompleted = respDataServer.LoanEst.completedFieldCount;
 	                fieldsStatus.totalRequiredFields = respDataServer.LoanEst.totalRequiredFieldCount;
-	                updateToolbar(fieldsStatus);
-	                var resData = {};
-
-	                resData.Default = "1";
-	                resData.DateIssued = respDataServer.LoanEst.DateIssued;
-	                resData.ApplicateName = respDataServer.LoanEst.ApplicateName;
-	                resData.ApplicateAddress1 = respDataServer.LoanEst.ApplicateAddress1;
-	                resData.ApplicateAddress2 = respDataServer.LoanEst.ApplicateAddress2;
-	                resData.Property = respDataServer.LoanEst.Property;
-	                resData.SalePrice = respDataServer.LoanEst.SalePrice;
-	                resData.LoanTerm = respDataServer.LoanEst.LoanTerm;
-	                resData.Purpose = respDataServer.LoanEst.Purpose;
-	                resData.LoanType = respDataServer.LoanEst.LoanType;
-	                resData.LoanID = respDataServer.LoanEst.LoanID;
-	                resData.RateLock = respDataServer.LoanEst.RateLock;
-	                resData.LoanAmount = respDataServer.LoanEst.LoanAmount;
-	                resData.InterestRate = respDataServer.LoanEst.InterestRate;
-	                resData.MonthlyPayment = respDataServer.LoanEst.MonthlyPayment;
-	                resData.PrincipaleAndInterest = respDataServer.LoanEst.PrincipaleAndInterest;
-	                resData.MortgageInsurance = respDataServer.LoanEst.MortgageInsurance;
-	                resData.EscrowAmount = respDataServer.LoanEst.EscrowAmount;
-	                resData.Estimates = respDataServer.LoanEst.Estimates;
-	                resData.ClosingCost = respDataServer.LoanEst.ClosingCost;
-	                resData.CashToClose = respDataServer.LoanEst.CashToClose;
-
-	                drawTable(respDataServer.LoanEst);
-    	        
+	                fieldsStatus.tabContentList = respDataServer.LoanEst.tabContentList;
+	                
+	                updateToolbar(fieldsStatus.totalRequiredCompleted, fieldsStatus.totalRequiredFields);
+	                
     	        },
     	        error: function(error){
-    	          console.log('error>>>> ' + error);
+    	          console.log('error in loadAppData >>>> ' + error);
     	        }
     	    });
     	}
     
 	    function drawTable(resData) {
 	        var dataViewerTable = document.getElementById('dataViewer');
-	
-	        var table = $('<table>').append('<div>').appendTo('body'),
-	              tbody = table.append('<div class=table-users><div class=header>'+ "Application Details"+'</div><table><tbody/>');
-	
-	        tbody.append('<tr><td class=content style="width:50%">Date Issued#</td><td class=content>'+resData.DateIssued+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Applicant Name</td><td class=content>'+resData.ApplicateName+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Applicant Address</td><td class=content>'+resData.ApplicateAddress1+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Applicant City, State</td><td class=content>'+resData.ApplicateAddress2+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Property</td><td class=content>'+resData.Property+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Sale Price</td><td class=content>'+resData.SalePrice+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Loan Term</td><td class=content>'+resData.LoanTerm+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Purpose</td><td class=content>'+resData.Purpose+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Loan Type</td><td class=content>'+resData.LoanType+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Loan ID</td><td class=content>'+resData.LoanID+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Rate Lock</td><td class=content>'+resData.RateLock+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Loan Amount</td><td class=content>'+resData.LoanAmount+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Interest Rate</td><td class=content>'+resData.InterestRate+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Monthly Payment</td><td class=content>'+resData.MonthlyPayment+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">MortgageInsurance</td><td class=content>'+resData.MortgageInsurance+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Escrow Amount</td><td class=content>'+resData.EscrowAmount+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Estimates</td><td class=content>'+resData.Estimates+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Closing Cost</td><td class=content>'+resData.ClosingCost+'</td></tr>');
-	        tbody.append('<tr><td class=content style="width:50%">Cash To Close</td><td class=content>'+resData.CashToClose+'</td></tr>');
-	
-	      dataViewerTable.innerHTML = tbody;
+	        dataViewerTable.innerHTML = '';
+	        
+	      	var arrValue = new Array();
+	        arrValue.push(['Date Issued#', resData.DateIssued]);
+	        arrValue.push(['Applicant Name', resData.ApplicateName]);
+	        arrValue.push(['Applicant Address', resData.ApplicateAddress1]);
+	        arrValue.push(['Applicant City, State, Zip', resData.ApplicateAddress2]);
+	        arrValue.push(['Property', resData.Property]);
+	        arrValue.push(['Sale Price', resData.SalePrice]);
+	        arrValue.push(['Loan Term', resData.LoanTerm]);
+	        arrValue.push(['Purpose', resData.Purpose]);
+	        arrValue.push(['Loan Type', resData.LoanType]);
+	        arrValue.push(['Loan ID', resData.LoanID]);
+	        arrValue.push(['Rate Lock', resData.RateLock]);
+	        arrValue.push(['Loan Amount', resData.LoanAmount]);
+	        arrValue.push(['Interest Rate', resData.InterestRate]);
+	        arrValue.push(['Monthly Payment', resData.MonthlyPayment]);
+	        arrValue.push(['MortgageInsurance', resData.MortgageInsurance]);
+	        arrValue.push(['Escrow Amount', resData.EscrowAmount]);
+	        arrValue.push(['Estimates', resData.Estimates]);
+	        arrValue.push(['Closing Cost', resData.ClosingCost]);
+	        arrValue.push(['Cash To Close', resData.CashToClose]);
+	      	
+
+	        // CREATE DYNAMIC TABLE.
+	        var table = document.createElement('table');
+
+	        // SET THE TABLE ID. 
+	        // WE WOULD NEED THE ID TO TRAVERSE AND EXTRACT DATA FROM THE TABLE.
+	        table.setAttribute('id', 'empTable');
+	        
+	        var tr = table.insertRow(-1);
+	        
+	        for (var c = 0; c <= arrValue.length - 1; c++) {
+	            tr = table.insertRow(-1);
+
+	            for (var j = 0; j < 2; j++) {
+	                var td = document.createElement('td');          // TABLE DEFINITION.
+	                td = tr.insertCell(-1);
+	                td.innerHTML = arrValue[c][j];                  // ADD VALUES TO EACH CELL.
+	            }
+	        }
+	        
+	        var ele = document.createElement("div");
+	        ele.setAttribute("id","timedrpact");
+	        ele.setAttribute("class","header");
+	        ele.innerHTML="Application Details";
+	        
+	        dataViewerTable.appendChild(ele);
+	        dataViewerTable.appendChild(table);
+	        //dataViewerTable.innerHTML = tbody;
 	    }
 	
 	    function removeProgressBarColor(element) {
+	    	
 	      element.classList.remove("progress-bar-success");
 	      element.classList.remove("progress-bar-info");
 	      element.classList.remove("progress-bar-warning");
@@ -183,10 +421,20 @@
 	
 	    }
 	
-	    function updateToolbar(fieldsStatus){
-	      var percentage = Math.round((fieldsStatus.totalRequiredCompleted * 100)/fieldsStatus.totalRequiredFields);
+	    function updateToolbar(totalRequiredCompleted, totalRequiredFields){
+	      
+	      var percentage = Math.round((totalRequiredCompleted * 100)/totalRequiredFields);
 	      var progressBar = document.getElementById('signing-progress');
 	      removeProgressBarColor(progressBar);
+	      
+	      var canFinishForm = document.getElementById("canFinishForm").value;
+	      
+	      console.log('canFinishForm in updateToolbar ' + canFinishForm);
+	      /*if(canFinishForm === 'true' || canFinishForm || canFinishForm === true){
+	    	  percentage = 100;
+	      }*/
+	      
+	      console.log('percentage in updateToolbar ' + canFinishForm);
 	
 	      if (percentage <= 30){
 	        progressBar.className = progressBar.className.replace(/\bprogress-bar-color\b/g, "");
@@ -210,11 +458,11 @@
 	    }
     
     </script>
-    
-    <script th:inline="javascript">
+
+	<script th:inline="javascript">
       (function() {
         var iframe = document.querySelector('#ds-iframe');
-
+        
         var envelopeId = /*[[${envelopeId}]]*/;
         var applicationId = /*[[${applicationId}]]*/;
         console.log('envelopeId is >>>> ' + envelopeId);
@@ -230,30 +478,30 @@
                     'Content-Type': 'application/json'
                   },
                 success: function(resData){
-                    
-                	console.log('resData>>>> ' + resData.url);
+                	
+                	window['loadAppData']();
+                	console.log('resData in loadIframe>>>> ' + resData.url);
                 	iframe.src = resData.url;
                 },
                 error: function(error){
 
-                	console.log('error>>>> ' + error);
+                	console.log('error in loadIframe>>>> ' + error);
                     
                 }
             });
         	
         }
-
+        
         function setIframeSize() {
           iframe.style.width = '100%';
-          iframe.style.height = window.innerHeight - 200 + 'px';
+          iframe.style.height = window.innerHeight - 100 + 'px';
         }
 
         function handleMessage(event) {
         	
-          console.log('111event.data.eventType>>> ' + event.data.eventType);
           if (event.data.sender === 'DSSigning') {
         	  
-        	console.log('event.data.eventType>>> ' + event.data.eventType);
+        	console.log('<<<event.data.eventType>>> ' + event.data.eventType);
         	
         	let iframe = document.getElementById('ds-iframe');
         	
@@ -264,7 +512,9 @@
                     functionName: 'init',
                     parameters: {
                       suppress: {
-                        adoptSignatureDialog: true
+                        adoptSignatureDialog: true,
+                        actionBar: true,
+                        welcome: true
                       }
                     }
                   },
@@ -289,22 +539,28 @@
               
               case 'tabChanged': {
             	  
-            	console.log('eventData.data:::: ' + JSON.stringify(event.data));
+            		console.log('::::eventData.data in tabChanged:::: ' + JSON.stringify(event.data));
             	  
-            	loadAppData();
-                  break;
+            		var dataViewerTable = document.getElementById('dataViewer');
+            		dataViewerTable.innerHTML = '';
+            		$( ".table-users" ).empty();
+            		//loadAppData();
+            		
+            		reloadProgressBar(event.data.content);
+                 	break;
                 }
               
 				case 'canFinishChanged': {
             	  
-            	  console.log('eventData.data:::: ' + JSON.stringify(event.data));
+            	  console.log('::::eventData.data in canFinishChanged:::: ' + JSON.stringify(event.data));
             	  var canFinishForm = document.getElementById("canFinishForm");
-            	  if(event.data.content.canFinish == true)
+            	  if(event.data.content.canFinish === true)
 					{
 						canFinishForm.value = 'true';
-    				} else {
+    				} 
+            	  else {
     					canFinishForm.value = 'false';
-    					}
+    				}
                   break;
                 }
             }
@@ -317,5 +573,5 @@
         setIframeSize();
       })();
     </script>
-  </body>
+</body>
 </html>

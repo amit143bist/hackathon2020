@@ -7,13 +7,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "compositeTemplates", "status" })
+@JsonPropertyOrder({ "compositeTemplates", "status", "useDisclosure" })
 public class EnvelopeDefinition {
 
 	@JsonProperty("compositeTemplates")
 	private List<CompositeTemplate> compositeTemplates = null;
 	@JsonProperty("status")
 	private String status;
+	@JsonProperty("useDisclosure")
+	private String useDisclosure;
 
 	@JsonProperty("compositeTemplates")
 	public List<CompositeTemplate> getCompositeTemplates() {
@@ -33,6 +35,16 @@ public class EnvelopeDefinition {
 	@JsonProperty("status")
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	@JsonProperty("useDisclosure")
+	public String getUseDisclosure() {
+		return useDisclosure;
+	}
+
+	@JsonProperty("useDisclosure")
+	public void setUseDisclosure(String useDisclosure) {
+		this.useDisclosure = useDisclosure;
 	}
 
 }

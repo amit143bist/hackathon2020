@@ -10,6 +10,9 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class QRCodeGenerator {
 
 	private static final String QR_CODE_IMAGE_PATH = "C:\\hackathon2020\\qrcode/MyQRCode";
@@ -28,9 +31,9 @@ public class QRCodeGenerator {
 		try {
 			generateQRCodeImage("http://localhost:53134?applicationId=12346", 350, 350, QR_CODE_IMAGE_PATH + "_12346.png");
 		} catch (WriterException e) {
-			System.out.println("Could not generate QR Code, WriterException :: " + e.getMessage());
+			log.info("Could not generate QR Code, WriterException :: " + e.getMessage());
 		} catch (IOException e) {
-			System.out.println("Could not generate QR Code, IOException :: " + e.getMessage());
+			log.info("Could not generate QR Code, IOException :: " + e.getMessage());
 		}
 	}
 }

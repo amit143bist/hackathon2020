@@ -23,7 +23,10 @@ import com.docusign.signing.model.LoanEstimateDefinition;
 import com.docusign.signing.model.ValidateResponse;
 import com.docusign.signing.service.DocuSignService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class WebsiteController {
 
 	@Autowired
@@ -32,14 +35,14 @@ public class WebsiteController {
 	@RequestMapping(value = "/readImage", method = RequestMethod.GET)
 	public String readimage(Model model) {
 
-		System.out.println("WebsiteController.readimage() ");
+		log.info("WebsiteController.readimage() ");
 		return "capture-qrimage";
 	}
 
 	@RequestMapping(value = "/saveProfileData", method = RequestMethod.POST)
 	public String saveProfileData(HttpServletRequest request, HttpServletResponse response, Model model) {
 
-		System.out.println("WebsiteController.saveProfileData() ");
+		log.info("WebsiteController.saveProfileData() ");
 
 		String envelopeId = null;
 		String applicationId = null;
@@ -53,11 +56,11 @@ public class WebsiteController {
 			String[] urlArr = url.split("applicationId=");
 			applicationId = urlArr[1];
 
-			System.out.println("WebsiteController.saveProfileData() applicationId " + applicationId);
+			log.info("WebsiteController.saveProfileData() applicationId " + applicationId);
 
 			envelopeId = docuSignService.createEnvelope(applicationId);
 
-			System.out.println("WebsiteController.saveProfileData() envelopeId " + envelopeId);
+			log.info("WebsiteController.saveProfileData() envelopeId " + envelopeId);
 
 			model.addAttribute("envelopeId", envelopeId);
 			model.addAttribute("applicationId", applicationId);
@@ -74,7 +77,7 @@ public class WebsiteController {
 	public String renderAuditReport(@RequestParam(value = "envelopeId", required = true) String envelopeId,
 			@RequestParam(value = "applicationId", required = true) String applicationId, Model model) {
 
-		System.out.println("WebsiteController.renderAuditReport() " + envelopeId + " applicationId " + applicationId);
+		log.info("WebsiteController.renderAuditReport() " + envelopeId + " applicationId " + applicationId);
 
 		model.addAttribute("envelopeId", envelopeId);
 		model.addAttribute("applicationId", applicationId);
@@ -86,7 +89,7 @@ public class WebsiteController {
 			@RequestParam(value = "envelopeId", required = true) String envelopeId,
 			@RequestParam(value = "applicationId", required = true) String applicationId, Model model) {
 
-		System.out.println("WebsiteController.loadAppData() " + envelopeId + " applicationId " + applicationId);
+		log.info("WebsiteController.loadAppData() " + envelopeId + " applicationId " + applicationId);
 
 		model.addAttribute("envelopeId", envelopeId);
 		model.addAttribute("applicationId", applicationId);
@@ -99,7 +102,7 @@ public class WebsiteController {
 			@RequestParam(value = "envelopeId", required = true) String envelopeId,
 			@RequestParam(value = "applicationId", required = true) String applicationId, Model model) {
 
-		System.out.println("WebsiteController.validateData() " + envelopeId + " applicationId " + applicationId);
+		log.info("WebsiteController.validateData() " + envelopeId + " applicationId " + applicationId);
 
 		model.addAttribute("envelopeId", envelopeId);
 		model.addAttribute("applicationId", applicationId);
@@ -111,8 +114,7 @@ public class WebsiteController {
 	public String genAndSubmitSpringCMData(@RequestParam(value = "envelopeId", required = true) String envelopeId,
 			@RequestParam(value = "applicationId", required = true) String applicationId, Model model) {
 
-		System.out.println(
-				"WebsiteController.genAndSubmitSpringCMData() " + envelopeId + " applicationId " + applicationId);
+		log.info("WebsiteController.genAndSubmitSpringCMData() " + envelopeId + " applicationId " + applicationId);
 
 		model.addAttribute("envelopeId", envelopeId);
 		model.addAttribute("applicationId", applicationId);
@@ -125,9 +127,33 @@ public class WebsiteController {
 			@RequestParam(value = "envelopeId", required = true) String envelopeId,
 			@RequestParam(value = "applicationId", required = true) String applicationId, Model model) {
 
-		System.out.println("WebsiteController.fetchEmbeddedUrl () " + model.getAttribute("envelopeId")
-				+ " applicationId " + model.getAttribute("applicationId"));
+		log.info("WebsiteController.fetchEmbeddedUrl () " + model.getAttribute("envelopeId") + " applicationId "
+				+ model.getAttribute("applicationId"));
 
 		return docuSignService.createEmbeddedSigningURL(envelopeId, applicationId, applicationId);
+	}
+	
+	@RequestMapping(value = "/loanestimatesubmitted", method = RequestMethod.GET)
+	public String loanestimatesubmitted(
+			@RequestParam(value = "envelopeId", required = true) String envelopeId,
+			@RequestParam(value = "recipientEmail", required = true) String recipientEmail, 
+			@RequestParam(value = "recipientName", required = true) String recipientName, Model model) {
+
+		log.info("WebsiteController.loanestimatesubmitted () " + model.getAttribute("envelopeId") + " applicationId "
+				+ model.getAttribute("applicationId"));
+
+		return "loanestimatedsubmitted";
+	}
+
+	@RequestMapping(value = "/genandloadform", method = RequestMethod.GET)
+	public String genandloadform(
+			@RequestParam(value = "envelopeId", required = true) String envelopeId,
+			@RequestParam(value = "recipientEmail", required = true) String recipientEmail, 
+			@RequestParam(value = "recipientName", required = true) String recipientName, Model model) {
+
+		log.info("WebsiteController.genandloadform () " + model.getAttribute("envelopeId") + " applicationId "
+				+ model.getAttribute("applicationId"));
+
+		return "genandloadform";
 	}
 }

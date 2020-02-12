@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "signHereTabs", "textTabs", "initialHereTabs", "dateSignedTabs", "radioGroupTabs" })
+@JsonPropertyOrder({ "signHereTabs", "textTabs", "initialHereTabs", "dateSignedTabs", "radioGroupTabs", "dateTabs",
+		"emailTabs" })
 public class Tabs {
 
 	@JsonProperty("signHereTabs")
@@ -20,6 +21,10 @@ public class Tabs {
 	private List<DateSignedTab> dateSignedTabs = null;
 	@JsonProperty("radioGroupTabs")
 	private List<RadioGroupTab> radioGroupTabs = null;
+	@JsonProperty("dateTabs")
+	private List<DateTab> dateTabs = null;
+	@JsonProperty("emailTabs")
+	private List<EmailTab> emailTabs = null;
 
 	@JsonProperty("signHereTabs")
 	public List<SignHereTab> getSignHereTabs() {
@@ -69,5 +74,25 @@ public class Tabs {
 	@JsonProperty("radioGroupTabs")
 	public void setRadioGroupTabs(List<RadioGroupTab> radioGroupTabs) {
 		this.radioGroupTabs = radioGroupTabs;
+	}
+
+	@JsonProperty("dateTabs")
+	public List<DateTab> getDateTabs() {
+		return dateTabs;
+	}
+
+	@JsonProperty("dateTabs")
+	public void setDateTabs(List<DateTab> dateTabs) {
+		this.dateTabs = dateTabs;
+	}
+
+	@JsonProperty("emailTabs")
+	public List<EmailTab> getEmailTabs() {
+		return emailTabs;
+	}
+
+	@JsonProperty("emailTabs")
+	public void setEmailTabs(List<EmailTab> emailTabs) {
+		this.emailTabs = emailTabs;
 	}
 }

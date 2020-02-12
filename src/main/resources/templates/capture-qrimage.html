@@ -3,10 +3,11 @@
   <head>
   </head>
   <body>
-	<video id="player" controls autoplay></video>
+	
+	<!-- <video id="player" controls autoplay></video>
 	<button id="capture">Capture</button>
 	<canvas id="canvas" width=320 height=240></canvas>
-	
+	 -->
 	<form action="saveProfileData" method="post" enctype="multipart/form-data">
 	    <input type="file" name="file" />
 	    <input type="submit" />
@@ -15,7 +16,7 @@
   </body>
 	  
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-	<script>
+	<!-- <script>
 	  const player = document.getElementById('player');
 	  const canvas = document.getElementById('canvas');
 	  const context = canvas.getContext('2d');
@@ -54,6 +55,6 @@
 	    .then((stream) => {
 	      player.srcObject = stream;
 	    });
-	  
+	   -->
 </script>
 </html>

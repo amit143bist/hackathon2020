@@ -5,4 +5,8 @@ docusign:
     user: 8e7f66a5-50c1-498c-8513-c403a35ea3cb
     baserUrl: https://demo.docusign.net/restapi/v2.1
     account: bb28c23d-bd41-4f02-91f7-f93ae6c6d220
+    radiogrouptabs: Finance_OPtion,Property_Use,First_Time_Buyer,Home_Type,Loan_Type
+    texttabs: Loan_Amount,Appication_ID,Borrower_Name,Borrower_Address,Borrower_State,Borrower_City,Borrower_Zip
+    datetabs: Borrower_DateOfBirth
+    emailtabs: Borrower_Email
 server:  port: 53134

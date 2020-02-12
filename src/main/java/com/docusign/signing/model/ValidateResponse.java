@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({ "status", "errorMessage", "redirectUrl" })
+@JsonPropertyOrder({ "status", "errorMessage", "redirectUrl", "LoanEst" })
 public class ValidateResponse {
 
 	@JsonProperty("status")
@@ -14,6 +14,8 @@ public class ValidateResponse {
 	private String errorMessage;
 	@JsonProperty("redirectUrl")
 	private String redirectUrl;
+	@JsonProperty("LoanEst")
+	private LoanEst loanEst;
 
 	@JsonProperty("status")
 	public String getStatus() {
@@ -43,6 +45,16 @@ public class ValidateResponse {
 	@JsonProperty("redirectUrl")
 	public void setRedirectUrl(String redirectUrl) {
 		this.redirectUrl = redirectUrl;
+	}
+
+	@JsonProperty("LoanEst")
+	public LoanEst getLoanEst() {
+		return loanEst;
+	}
+
+	@JsonProperty("LoanEst")
+	public void setLoanEst(LoanEst loanEst) {
+		this.loanEst = loanEst;
 	}
 
 }

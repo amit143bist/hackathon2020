@@ -53,7 +53,7 @@ table {
     max-width: calc(50% - 2em);
     margin-left: 2em;
     overflow: hidden;
-    width: 20%;
+    width: 45%;
 
 }
 .table-users.h0 {
@@ -225,4 +225,33 @@ h1 {
 }
 .active22, .collapsible22:hover {
     background-color: #555;
+}
+
+.nextButton{
+	background-color: #ffc820 !important;
+    border-color: #ffc820 !important;
+    color: #333333 !important;
+    font-size: 15px;
+    display: inline-block;
+    box-sizing: border-box;
+    height: 32px;
+    border: 1px solid transparent;
+    line-height: 30px;
+    padding: 0 17px;
+    margin: 0 10px 0 0;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    white-space: nowrap;
+    font-family: "Maven Pro",Arial,sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    position: relative;
 }

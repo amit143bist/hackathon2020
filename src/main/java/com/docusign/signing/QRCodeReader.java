@@ -15,6 +15,9 @@ import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class QRCodeReader {
 
 	public static String decodeQRCode(File qrCodeimage) throws IOException {
@@ -26,7 +29,7 @@ public class QRCodeReader {
 			Result result = new MultiFormatReader().decode(bitmap);
 			return result.getText();
 		} catch (NotFoundException e) {
-			System.out.println("There is no QR code in the image");
+			log.info("There is no QR code in the image");
 			return null;
 		}
 	}
@@ -39,10 +42,10 @@ public class QRCodeReader {
 		try {
 			Result result = new MultiFormatReader().decode(bitmap);
 			
-			System.out.println("QRCodeReader.decodeQRCodeFromStream() " + result.getText());
+			log.info("QRCodeReader.decodeQRCodeFromStream() " + result.getText());
 			return result.getText();
 		} catch (NotFoundException e) {
-			System.out.println("There is no QR code in the image");
+			log.info("There is no QR code in the image");
 			return null;
 		}
 	}
@@ -52,12 +55,12 @@ public class QRCodeReader {
 			File file = new File("C:\\hackathon2020\\qrcode/MyQRCode.png");
 			String decodedText = decodeQRCode(file);
 			if (decodedText == null) {
-				System.out.println("No QR Code found in the image");
+				log.info("No QR Code found in the image");
 			} else {
-				System.out.println("Decoded text = " + decodedText);
+				log.info("Decoded text = " + decodedText);
 			}
 		} catch (IOException e) {
-			System.out.println("Could not decode QR Code, IOException :: " + e.getMessage());
+			log.info("Could not decode QR Code, IOException :: " + e.getMessage());
 		}
 	}
 }
