@@ -74,13 +74,13 @@ table th {
     padding: 4px;
 }
 table td {
-    font-size: 9pt;
+    font-size: 10pt;
     text-align: center;
     vertical-align: middle;
     text-align: left;
 }
 table td:last-child {
-    font-size: 12pt;
+    font-size: 9pt;
     line-height: 1.4;
     text-align: left;
 }
@@ -149,13 +149,13 @@ a:hover {
     clear: both;
 }
 .content {
-    font-size: 12pt;
+    font-size: 10pt;
     font-family: Arial, sans-serif;
     color: black;
 }
 .content-text {
     margin: 0px 0px 0px 0px;
-    font-size: 12pt;
+    font-size: 10pt;
     font-family: Arial, sans-serif;
     color: black;
 }
@@ -254,4 +254,46 @@ h1 {
     font-weight: 700;
     text-transform: uppercase;
     position: relative;
+}
+.container {
+	margin: 0 auto;
+	padding: 10px;
+	display: flex;
+}
+
+.code {
+	max-width: 500px;
+	max-height: 790px;
+	overflow: auto;
+}
+
+.alert {
+	padding: 20px;
+	background-color: #f44336;
+	color: white;
+}
+
+.closebtn {
+	margin-left: 15px;
+	color: white;
+	font-weight: bold;
+	float: right;
+	font-size: 22px;
+	line-height: 20px;
+	cursor: pointer;
+	transition: 0.3s;
+}
+
+.closebtn:hover {
+	color: black;
+}
+
+#outer
+{
+    width:60%;
+    text-align: center;
+}
+.inner
+{
+    display: inline-block;
 }

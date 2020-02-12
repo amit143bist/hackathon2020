@@ -9,39 +9,6 @@
 body {
 	font-family: Helvetica, Arial, sans-serif;
 }
-
-.container {
-	margin: 0 auto;
-	padding: 10px;
-	display: flex;
-}
-
-.code {
-	max-width: 500px;
-	max-height: 790px;
-	overflow: auto;
-}
-
-.alert {
-	padding: 20px;
-	background-color: #f44336;
-	color: white;
-}
-
-.closebtn {
-	margin-left: 15px;
-	color: white;
-	font-weight: bold;
-	float: right;
-	font-size: 22px;
-	line-height: 20px;
-	cursor: pointer;
-	transition: 0.3s;
-}
-
-.closebtn:hover {
-	color: black;
-}
 </style>
 </head>
 <body>
@@ -65,20 +32,23 @@ body {
 
 	<div id="containerDiv">
 		<div class="container">
-
 			<iframe id="ds-iframe" name="ds-iframe"></iframe>
 	
 			<div id="dataViewer" class="table-users" style="display: none"></div>
-	
 		</div>
 		<div class="container">
 			<input id="canFinishForm" type="hidden" value="false">
 	
-			<button id="btnValidateData" class="nextButton"
-				onclick="validateData()">Validate Data</button>
-	
-			<button id="btnSignDocument" class="nextButton"
-				onclick="signDocument()" style="display: none">Sign Document</button>
+			<div id="outer">
+				<div class="inner">
+					<button id="btnValidateData" class="nextButton"
+						onclick="validateData()">Validate Data</button>
+				</div>
+			    <div class="inner">
+					<button id="btnSignDocument" class="nextButton"
+						onclick="signDocument()" style="display: none">Sign Document</button>
+				</div>
+			</div> 
 		</div>
 	</div>
 
@@ -91,10 +61,10 @@ body {
 	<script th:inline="javascript">
 	
 	var cSpeed=9;
-    var cWidth=150;
-    var cHeight=150;
+    var cWidth=64;
+    var cHeight=64;
     var cTotalFrames=12;
-    var cFrameWidth=150;
+    var cFrameWidth=64;
     var cImageSrc='images/sprites.gif';
 
     var cImageTimeout=false;
@@ -397,19 +367,19 @@ body {
 
 	            for (var j = 0; j < 2; j++) {
 	                var td = document.createElement('td');          // TABLE DEFINITION.
+	                td.setAttribute("class","content-text");
 	                td = tr.insertCell(-1);
 	                td.innerHTML = arrValue[c][j];                  // ADD VALUES TO EACH CELL.
 	            }
 	        }
 	        
 	        var ele = document.createElement("div");
-	        ele.setAttribute("id","timedrpact");
+	        ele.setAttribute("id","tableHeader");
 	        ele.setAttribute("class","header");
 	        ele.innerHTML="Application Details";
 	        
 	        dataViewerTable.appendChild(ele);
 	        dataViewerTable.appendChild(table);
-	        //dataViewerTable.innerHTML = tbody;
 	    }
 	
 	    function removeProgressBarColor(element) {
@@ -540,12 +510,10 @@ body {
               case 'tabChanged': {
             	  
             		console.log('::::eventData.data in tabChanged:::: ' + JSON.stringify(event.data));
-            	  
-            		var dataViewerTable = document.getElementById('dataViewer');
-            		dataViewerTable.innerHTML = '';
-            		$( ".table-users" ).empty();
-            		//loadAppData();
             		
+            		show('btnValidateData');
+    	        	hide('btnSignDocument');
+    	        	hide('dataViewer');
             		reloadProgressBar(event.data.content);
                  	break;
                 }
