@@ -87,7 +87,7 @@ public class DocuSignService {
 		headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
 //		headers.set("Authorization", "Bearer" + " " + token);
 		headers.set("X-DocuSign-Authentication",
-				"<DocuSignCredentials><Username>gen_archive_user_demo@dsxtr.com</Username><Password>gen_archive_user_demo</Password><IntegratorKey>16f81d9e-e9ee-408d-bc60-d6e1aecd9756</IntegratorKey></DocuSignCredentials>");
+				"<DocuSignCredentials><Username>{{UserName}}</Username><Password>{{Password}}</Password><IntegratorKey>{{IntegratorKey}}</IntegratorKey></DocuSignCredentials>");
 
 		return headers;
 	}
